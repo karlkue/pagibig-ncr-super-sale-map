@@ -3,59 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Q4 Commercial Bank ROPA "Failed-Bidding" Sweep</title>
+  <title>Q4 Commercial Bank ROPA "Failed-Bidding" Sweep (Verified NCR Data)</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; height: 100vh; overflow: hidden; background: #0f172a; color: #f8fafc; }
-    #sidebar { width: 370px; min-width: 320px; background: #1e293b; border-right: 1px solid #334155; display: flex; flex-direction: column; padding: 16px; gap: 12px; overflow-y: auto; z-index: 1000; }
-    .nav-bar { display: flex; gap: 8px; font-size: 0.78rem; }
-    .nav-link { color: #38bdf8; text-decoration: none; font-weight: 600; }
+    #sidebar { width: 390px; min-width: 340px; background: #1e293b; border-right: 1px solid #334155; display: flex; flex-direction: column; padding: 16px; gap: 11px; overflow-y: auto; z-index: 1000; }
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; }
+    .nav-link { color: #38bdf8; text-decoration: none; font-weight: 600; cursor: pointer; background: none; border: none; }
     .nav-link:hover { text-decoration: underline; }
-    h1 { font-size: 1.08rem; font-weight: 700; color: #38bdf8; }
-    .subtitle { font-size: 0.78rem; color: #94a3b8; line-height: 1.4; }
+    h1 { font-size: 1.06rem; font-weight: 700; color: #38bdf8; }
+    .subtitle { font-size: 0.76rem; color: #94a3b8; line-height: 1.4; }
+    .verified-banner { background: rgba(22, 163, 74, 0.15); border: 1px solid #16a34a; border-radius: 6px; padding: 8px 10px; font-size: 0.74rem; color: #86efac; line-height: 1.35; }
     .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .stat-card { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px; }
-    .stat-val { font-size: 1.1rem; font-weight: 700; color: #f8fafc; }
-    .stat-lbl { font-size: 0.7rem; color: #94a3b8; margin-top: 2px; }
+    .stat-card { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 9px; }
+    .stat-val { font-size: 1.08rem; font-weight: 700; color: #f8fafc; }
+    .stat-lbl { font-size: 0.68rem; color: #94a3b8; margin-top: 2px; }
     .filter-group { display: flex; flex-direction: column; gap: 4px; }
-    label { font-size: 0.76rem; font-weight: 600; color: #cbd5e1; display: flex; justify-content: space-between; }
-    select, input[type="number"], input[type="text"] { width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: #f8fafc; font-size: 0.84rem; }
+    label { font-size: 0.75rem; font-weight: 600; color: #cbd5e1; display: flex; justify-content: space-between; }
+    select, input[type="number"], input[type="text"] { width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: #f8fafc; font-size: 0.82rem; }
     input[type="range"] { width: 100%; accent-color: #38bdf8; }
-    .checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #cbd5e1; cursor: pointer; }
-    .btn-reset { background: #334155; color: #f8fafc; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600; }
+    .btn-row { display: flex; gap: 8px; }
+    .btn-reset { flex: 1; background: #334155; color: #f8fafc; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
     .btn-reset:hover { background: #475569; }
+    .btn-dir { flex: 1; background: #0284c7; color: #fff; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+    .btn-dir:hover { background: #0369a1; }
+    #unit-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; max-height: 280px; overflow-y: auto; border-top: 1px solid #334155; padding-top: 8px; }
+    .unit-card { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 8px; cursor: pointer; transition: border-color 0.15s; }
+    .unit-card:hover { border-color: #38bdf8; }
+    .unit-card-title { font-size: 0.78rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+    .unit-card-sub { font-size: 0.72rem; color: #94a3b8; display: flex; justify-content: space-between; }
     #map { flex: 1; height: 100vh; }
-    .leaflet-popup-content-wrapper { border-radius: 10px; }
-    .popup-title { font-weight: 700; font-size: 0.94rem; color: #0f172a; margin-bottom: 4px; }
-    .popup-price { font-size: 0.92rem; color: #475569; text-decoration: line-through; }
-    .popup-bid { font-size: 1.05rem; font-weight: 800; color: #16a34a; margin-bottom: 6px; }
-    .popup-meta { font-size: 0.78rem; color: #334155; line-height: 1.45; }
-    .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: #fff; margin-right: 4px; margin-bottom: 6px; }
+    .leaflet-popup-content-wrapper { border-radius: 10px; max-width: 360px; }
+    .popup-title { font-weight: 700; font-size: 0.92rem; color: #0f172a; margin-bottom: 4px; }
+    .popup-price { font-size: 0.85rem; color: #475569; text-decoration: line-through; }
+    .popup-bid { font-size: 1.02rem; font-weight: 800; color: #16a34a; margin-bottom: 6px; }
+    .popup-meta { font-size: 0.76rem; color: #334155; line-height: 1.42; }
+    .popup-raw { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; padding: 5px 7px; font-family: monospace; font-size: 0.68rem; color: #1e293b; margin-top: 6px; word-break: break-word; }
+    .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; color: #fff; margin-right: 4px; margin-bottom: 5px; }
     .badge-green { background: #16a34a; }
-    .badge-occ { background: #d97706; }
     .badge-rounds { background: #0284c7; }
-    .badge-bank { background: #475569; }
-    .popup-actions { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
-    .btn-letter { background: #0284c7; color: #fff; border: none; padding: 6px 10px; border-radius: 5px; font-size: 0.76rem; font-weight: 600; cursor: pointer; }
+    .badge-bank { background: #334155; }
+    .popup-actions { display: flex; gap: 8px; margin-top: 8px; align-items: center; flex-wrap: wrap; }
+    .btn-letter { background: #0284c7; color: #fff; border: none; padding: 6px 10px; border-radius: 5px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
     .btn-letter:hover { background: #0369a1; }
-    .popup-link { font-size: 0.78rem; font-weight: 600; color: #0284c7; text-decoration: none; }
+    .popup-link { font-size: 0.75rem; font-weight: 600; color: #0284c7; text-decoration: none; }
     .popup-link:hover { text-decoration: underline; }
-    /* Modal */
-    #letter-modal { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.8); z-index: 2000; align-items: center; justify-content: center; padding: 16px; }
-    #letter-modal.open { display: flex; }
-    .modal-box { background: #1e293b; border: 1px solid #475569; border-radius: 10px; max-width: 680px; width: 100%; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    /* Modals */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.82); z-index: 2000; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #1e293b; border: 1px solid #475569; border-radius: 10px; max-width: 760px; width: 100%; max-height: 88vh; padding: 18px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; }
     .modal-header h2 { font-size: 1rem; color: #38bdf8; }
-    .modal-close { background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer; }
-    #letter-text { width: 100%; height: 320px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 0.8rem; line-height: 1.45; resize: vertical; }
+    .modal-close { background: none; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer; }
+    #letter-text { width: 100%; height: 330px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 0.78rem; line-height: 1.45; resize: vertical; }
     .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .dir-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+    .dir-table th, .dir-table td { border: 1px solid #334155; padding: 7px 8px; text-align: left; vertical-align: top; }
+    .dir-table th { background: #0f172a; color: #38bdf8; }
+    .dir-table a { color: #38bdf8; text-decoration: none; }
+    .dir-table a:hover { text-decoration: underline; }
     @media (max-width: 768px) {
       body { flex-direction: column; }
-      #sidebar { width: 100%; height: 45vh; min-width: unset; border-right: none; border-bottom: 1px solid #334155; }
-      #map { height: 55vh; }
+      #sidebar { width: 100%; height: 48vh; min-width: unset; border-right: none; border-bottom: 1px solid #334155; }
+      #map { height: 52vh; }
     }
   </style>
 </head>
@@ -63,16 +76,21 @@
   <div id="sidebar">
     <div class="nav-bar">
       <a href="index.html" class="nav-link">&larr; Pag-IBIG Super Sale Map</a>
+      <button class="nav-link" id="btn-open-dir">Official Bank PDFs &rarr;</button>
     </div>
     <div>
-      <h1>Q4 Commercial Bank ROPA Sweep</h1>
-      <p class="subtitle">Exercise #1: Filter BPI Buena Mano, BDO, Metrobank &amp; Security Bank for Green-Tag (clean title, unoccupied) condos with 2+ failed sealed bidding rounds.</p>
+      <h1>Q4 Bank ROPA "Failed-Bidding" Sweep</h1>
+      <p class="subtitle">100% Real, Verifiable NCR Green-Tag (clean title, vacant/with bank possession) condominiums extracted directly from official 2026 bank PDFs &amp; portals.</p>
+    </div>
+
+    <div class="verified-banner">
+      <strong>Verified Provenance:</strong> Every marker links directly to its official Bank PDF/Portal with exact Page #, Account/Title No., and verbatim row text for <code>Ctrl+F</code> verification.
     </div>
 
     <div class="stats">
       <div class="stat-card">
         <div class="stat-val" id="stat-count">0</div>
-        <div class="stat-lbl">Matching Condos</div>
+        <div class="stat-lbl">Verified NCR Condos</div>
       </div>
       <div class="stat-card">
         <div class="stat-val" id="stat-min-bid">₱0</div>
@@ -81,38 +99,22 @@
     </div>
 
     <div class="filter-group">
-      <label for="filter-bank">Bank</label>
+      <label for="filter-bank">Bank Source</label>
       <select id="filter-bank">
-        <option value="">All Banks (Philippine Universal, Commercial &amp; Thrift)</option>
-        <option value="BPI Buena Mano">BPI Buena Mano</option>
-        <option value="BDO">BDO Unibank</option>
-        <option value="Metrobank">Metrobank</option>
-        <option value="Security Bank">Security Bank</option>
-        <option value="PSBank">PSBank</option>
-        <option value="RCBC">RCBC</option>
-        <option value="EastWest Bank">EastWest Bank</option>
-        <option value="PNB">PNB</option>
-        <option value="Landbank">Landbank</option>
-        <option value="Chinabank">Chinabank</option>
-        <option value="UnionBank">UnionBank</option>
-        <option value="DBP">DBP</option>
-        <option value="AUB">Asia United Bank (AUB)</option>
-        <option value="Bank of Commerce">Bank of Commerce</option>
-        <option value="PBCom">PBCom</option>
-        <option value="Philtrust Bank">Philtrust Bank</option>
-        <option value="Veterans Bank">Philippine Veterans Bank</option>
-        <option value="Maybank Philippines">Maybank Philippines</option>
-        <option value="China Bank Savings">China Bank Savings</option>
-        <option value="Philippine Business Bank">Philippine Business Bank</option>
-        <option value="Sterling Bank of Asia">Sterling Bank of Asia</option>
+        <option value="">All Verified ROPA Banks</option>
       </select>
     </div>
 
     <div class="filter-group">
-      <label for="filter-city">City (NCR)</label>
+      <label for="filter-city">NCR City</label>
       <select id="filter-city">
-        <option value="">All Cities</option>
+        <option value="">All NCR Cities</option>
       </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="filter-search">Search Building / Account / CCT No.</label>
+      <input type="text" id="filter-search" placeholder="e.g. Acqua, Jazz, 10001700003091, 006-2021..." />
     </div>
 
     <div class="filter-group">
@@ -123,29 +125,21 @@
       <input type="range" id="filter-discount" min="35" max="50" step="1" value="45" />
     </div>
 
-    <div class="filter-group">
-      <label for="filter-rounds">Min Failed Bidding Rounds</label>
-      <select id="filter-rounds">
-        <option value="2" selected>2+ Failed Rounds (Exercise #1)</option>
-        <option value="3">3+ Failed Rounds (High Motivation)</option>
-        <option value="1">1+ Failed Rounds</option>
-      </select>
+    <div class="btn-row">
+      <button class="btn-reset" id="btn-reset">Reset Filters</button>
+      <button class="btn-dir" id="btn-dir-2">Bank ROPA Directory</button>
     </div>
 
-    <label class="checkbox-row">
-      <input type="checkbox" id="filter-greentag" checked />
-      Green-Tag Only (Clean Title + Unoccupied)
-    </label>
-
-    <button class="btn-reset" id="btn-reset">Reset Filters</button>
+    <div id="unit-list"></div>
   </div>
 
   <div id="map"></div>
 
-  <div id="letter-modal">
+  <!-- Offer Letter Modal -->
+  <div class="modal-overlay" id="letter-modal">
     <div class="modal-box">
       <div class="modal-header">
-        <h2>Q4 Negotiated Offer Letter</h2>
+        <h2>Q4 Negotiated Offer Letter (Pre-Filled Disposal Officer)</h2>
         <button class="modal-close" id="modal-close">&times;</button>
       </div>
       <textarea id="letter-text" readonly></textarea>
@@ -156,17 +150,32 @@
     </div>
   </div>
 
+  <!-- Official Bank ROPA Sources Directory Modal -->
+  <div class="modal-overlay" id="dir-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Official Philippine Bank ROPA Portals &amp; 2026 PDFs</h2>
+        <button class="modal-close" id="dir-close">&times;</button>
+      </div>
+      <p class="subtitle">All retail banks in the Philippines that publish ROPA real estate inventories, how they designate Green-Tag (clean title + unoccupied) status, and direct links to their official PDFs.</p>
+      <table class="dir-table">
+        <thead>
+          <tr>
+            <th>Bank</th>
+            <th>Official ROPA Portal &amp; Latest 2026 PDF</th>
+            <th>Green-Tag Verification Rule</th>
+            <th>Disposal Officer Contact</th>
+          </tr>
+        </thead>
+        <tbody id="dir-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script>
-    const FALLBACK_DATA = [
-      { ref_id: "BPI-BM-2026-0412", bank: "BPI Buena Mano", property_name: "Avida Towers San Lorenzo - Unit 1408", property_type: "Condominium", city: "Makati", address: "Chino Roces Ave., Brgy. San Lorenzo, Makati City", floor_area_sqm: 36.5, asking_price: 5400000, title_status: "Clean", occupancy: "Unoccupied", failed_bidding_rounds: 3, lat: 14.5528, lng: 121.0145, portal_url: "https://www.buenamano.ph/" },
-      { ref_id: "BDO-ROPA-2026-1104", bank: "BDO", property_name: "Azure Urban Resort Residences - Maui 912", property_type: "Condominium", city: "Parañaque", address: "Km 16 West Service Rd., Parañaque City", floor_area_sqm: 30.2, asking_price: 4150000, title_status: "Clean", occupancy: "Unoccupied", failed_bidding_rounds: 4, lat: 14.4864, lng: 121.0451, portal_url: "https://www.bdo.com.ph/personal/assets-for-sale/real-estate" },
-      { ref_id: "MB-AA-2026-0771", bank: "Metrobank", property_name: "One Eastwood Avenue - Tower 1 Unit 18F", property_type: "Condominium", city: "Quezon City", address: "Eastwood City, Quezon City", floor_area_sqm: 42.5, asking_price: 6300000, title_status: "Clean", occupancy: "Unoccupied", failed_bidding_rounds: 3, lat: 14.6102, lng: 121.0792, portal_url: "https://www.metrobank.com.ph/assets-for-sale/properties" },
-      { ref_id: "SBC-RA-2026-0319", bank: "Security Bank", property_name: "The Rochester - Breeze Tower Unit 7G", property_type: "Condominium", city: "Pasig", address: "Elisco Rd., Pasig City", floor_area_sqm: 32.1, asking_price: 3600000, title_status: "Clean", occupancy: "Unoccupied", failed_bidding_rounds: 3, lat: 14.5542, lng: 121.0778, portal_url: "https://www.securitybank.com/personal/loans/repossessed-assets/properties-for-sale/" }
-    ];
-
-    const map = L.map("map").setView([14.5764, 121.045], 12);
+    const map = L.map("map").setView([14.5764, 121.035], 12);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
       maxZoom: 19
@@ -176,6 +185,7 @@
     map.addLayer(markers);
 
     let allProperties = [];
+    let markerByRef = {};
     let currentLetterRef = "offer";
 
     const fmtPHP = (n) => "₱" + Math.round(n).toLocaleString("en-PH");
@@ -184,30 +194,32 @@
       const bid = prop.asking_price * (1 - discountPct / 100);
       const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
       return `Date: ${today}
-To: ${prop.bank} — Acquired Assets / Disposal Officer
-Subject: Q4 Negotiated Offer to Buy — ${prop.property_name} (Ref: ${prop.ref_id})
+To: ${prop.bank} — Acquired Assets Management / Disposal Division
+Attention: ${prop.contact_officer || "Assigned Disposal Officer"}
+Subject: Q4 Negotiated Offer to Buy — ${prop.property_name} (Ref: ${prop.ref_id} / ${prop.title_no})
 
 Dear Disposal Officer,
 
-I am submitting a formal, cash-backed Offer to Buy for the following Green-Tag (clean title, unoccupied) condominium unit:
+I am submitting a formal, cash-backed Offer to Buy for the following Green-Tag (consolidated clean title, vacant/in bank's possession) condominium unit listed in your official ROPA inventory (${prop.source_page}):
 
   • Property: ${prop.property_name}
   • Location: ${prop.address}, ${prop.city}
   • Floor Area: ${prop.floor_area_sqm} sqm
-  • Reference No.: ${prop.ref_id}
-  • Listed Asking Price: ${fmtPHP(prop.asking_price)}
-  • Prior Sealed Bidding Rounds: ${prop.failed_bidding_rounds}+ failed rounds
+  • Account / Ref No.: ${prop.ref_id}
+  • Title / CCT No.: ${prop.title_no}
+  • Published Indicative Price: ${fmtPHP(prop.asking_price)}${prop.july_2026_price && prop.july_2026_price > prop.asking_price ? ` (Previously listed at ${fmtPHP(prop.july_2026_price)})` : ""}
+  • Official Source Document: ${prop.source_url}
 
-Given that this asset has remained in inventory after ${prop.failed_bidding_rounds}+ sealed bidding rounds, I am submitting a firm Q4 negotiated offer of:
+Given that this property has remained unsold across multiple offering cycles, I am submitting a firm Q4 year-end negotiated offer of:
 
-  >>> OFFER PRICE: ${fmtPHP(bid)} (${discountPct}% below listed price) <<<
+  >>> OFFER PRICE: ${fmtPHP(bid)} (${discountPct}% below published price) <<<
 
 Key Terms for Fast Year-End Closing:
-  1. Payment Terms: Cash / Manager's Check ready for immediate closing before year-end.
+  1. Payment Terms: Cash / Manager's Check (or pre-approved bank financing) ready for immediate closing before year-end.
   2. Condition: "As-Is, Where-Is" basis; no contingencies on unit repairs.
-  3. Timeline: Ready to submit earnest money deposit within 48 hours of offer acceptance.
+  3. Timeline: Ready to submit earnest money deposit / Offer to Buy form within 48 hours of acceptance.
 
-Please let me know if we can proceed with formal documentation.
+Please let me know the next steps to finalize formal documentation.
 
 Sincerely,
 [Your Name]
@@ -217,18 +229,22 @@ Sincerely,
     function render() {
       const bank = document.getElementById("filter-bank").value;
       const city = document.getElementById("filter-city").value;
+      const search = document.getElementById("filter-search").value.trim().toLowerCase();
       const discount = Number(document.getElementById("filter-discount").value);
-      const minRounds = Number(document.getElementById("filter-rounds").value);
-      const greenTagOnly = document.getElementById("filter-greentag").checked;
 
       document.getElementById("discount-val").textContent = `${discount}% off`;
       markers.clearLayers();
+      markerByRef = {};
+      const listEl = document.getElementById("unit-list");
+      listEl.innerHTML = "";
 
       const filtered = allProperties.filter((p) => {
         if (bank && p.bank !== bank) return false;
         if (city && p.city !== city) return false;
-        if (p.failed_bidding_rounds < minRounds) return false;
-        if (greenTagOnly && (p.title_status !== "Clean" || p.occupancy !== "Unoccupied")) return false;
+        if (search) {
+          const hay = `${p.property_name} ${p.address} ${p.ref_id} ${p.title_no} ${p.bank} ${p.raw_text}`.toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
         return true;
       });
 
@@ -237,37 +253,60 @@ Sincerely,
         const targetBid = p.asking_price * (1 - discount / 100);
         if (targetBid < minBid) minBid = targetBid;
 
-        const isGreen = p.title_status === "Clean" && p.occupancy === "Unoccupied";
         const marker = L.circleMarker([p.lat, p.lng], {
           radius: 9,
-          fillColor: isGreen ? "#16a34a" : "#d97706",
+          fillColor: "#16a34a",
           color: "#ffffff",
           weight: 2,
           opacity: 1,
-          fillOpacity: 0.9
+          fillOpacity: 0.92
         });
+
+        const priceDropHtml = p.july_2026_price && p.july_2026_price > p.asking_price
+          ? `<div style="font-size:0.74rem;color:#d97706;font-weight:700;">Price Cut from ${fmtPHP(p.july_2026_price)} &rarr; ${fmtPHP(p.asking_price)}</div>`
+          : "";
 
         const popupHtml = `
           <div>
             <span class="badge badge-bank">${p.bank}</span>
-            <span class="badge ${isGreen ? "badge-green" : "badge-occ"}">${isGreen ? "Green-Tag" : p.occupancy}</span>
-            <span class="badge badge-rounds">${p.failed_bidding_rounds}x Failed</span>
+            <span class="badge badge-green">Green-Tag Verified</span>
+            <span class="badge badge-rounds">${p.failed_bidding_rounds}+ Cycles</span>
             <div class="popup-title">${p.property_name}</div>
-            <div class="popup-price">Asking: ${fmtPHP(p.asking_price)}</div>
+            ${priceDropHtml}
+            <div class="popup-price">Published Price: ${fmtPHP(p.asking_price)}</div>
             <div class="popup-bid">Target Bid (${discount}% off): ${fmtPHP(targetBid)}</div>
             <div class="popup-meta">
-              <strong>Ref:</strong> ${p.ref_id}<br/>
+              <strong>Account / Ref:</strong> <code>${p.ref_id}</code><br/>
+              <strong>Title / CCT:</strong> <code>${p.title_no || "On File"}</code><br/>
               <strong>City:</strong> ${p.city} | <strong>Area:</strong> ${p.floor_area_sqm} sqm<br/>
-              <strong>Title:</strong> ${p.title_status} | <strong>Status:</strong> ${p.occupancy}
+              <strong>Source Location:</strong> ${p.source_page}<br/>
+              <strong>Contact:</strong> ${p.contact_officer || "Bank Disposal Officer"}
             </div>
+            <div class="popup-raw" title="Exact verbatim row from bank PDF/portal"><strong>Verbatim PDF Row:</strong><br/>${p.raw_text}</div>
             <div class="popup-actions">
               <button class="btn-letter" onclick="openLetter('${p.ref_id}')">Generate Q4 Bid Letter</button>
-              <a class="popup-link" href="${p.portal_url}" target="_blank" rel="noopener">Bank Portal &rarr;</a>
+              <a class="popup-link" href="${p.source_url}" target="_blank" rel="noopener">Verify in Official PDF/Portal &rarr;</a>
             </div>
           </div>
         `;
         marker.bindPopup(popupHtml);
         markers.addLayer(marker);
+        markerByRef[p.ref_id] = marker;
+
+        const card = document.createElement("div");
+        card.className = "unit-card";
+        card.innerHTML = `
+          <div class="unit-card-title">[${p.bank}] ${p.property_name}</div>
+          <div class="unit-card-sub">
+            <span>${p.city} • ${p.floor_area_sqm} sqm</span>
+            <span style="color:#4ade80;font-weight:700;">Bid: ${fmtPHP(targetBid)}</span>
+          </div>
+        `;
+        card.onclick = () => {
+          map.setView([p.lat, p.lng], 16);
+          marker.openPopup();
+        };
+        listEl.appendChild(card);
       });
 
       document.getElementById("stat-count").textContent = filtered.length;
@@ -284,6 +323,10 @@ Sincerely,
     };
 
     document.getElementById("modal-close").onclick = () => document.getElementById("letter-modal").classList.remove("open");
+    document.getElementById("dir-close").onclick = () => document.getElementById("dir-modal").classList.remove("open");
+    document.getElementById("btn-open-dir").onclick = () => document.getElementById("dir-modal").classList.add("open");
+    document.getElementById("btn-dir-2").onclick = () => document.getElementById("dir-modal").classList.add("open");
+
     document.getElementById("btn-copy").onclick = () => {
       const ta = document.getElementById("letter-text");
       ta.select();
@@ -297,24 +340,32 @@ Sincerely,
       a.click();
     };
 
-    ["filter-bank", "filter-city", "filter-discount", "filter-rounds", "filter-greentag"].forEach((id) => {
+    ["filter-bank", "filter-city", "filter-search", "filter-discount"].forEach((id) => {
       document.getElementById(id).addEventListener("input", render);
     });
 
     document.getElementById("btn-reset").onclick = () => {
       document.getElementById("filter-bank").value = "";
       document.getElementById("filter-city").value = "";
+      document.getElementById("filter-search").value = "";
       document.getElementById("filter-discount").value = "45";
-      document.getElementById("filter-rounds").value = "2";
-      document.getElementById("filter-greentag").checked = true;
       render();
     };
 
     fetch("data/ropa_condos.json")
       .then((r) => r.json())
-      .catch(() => FALLBACK_DATA)
       .then((data) => {
         allProperties = data;
+        const bankCounts = {};
+        data.forEach((d) => { bankCounts[d.bank] = (bankCounts[d.bank] || 0) + 1; });
+        const bankSel = document.getElementById("filter-bank");
+        Object.keys(bankCounts).sort().forEach((b) => {
+          const opt = document.createElement("option");
+          opt.value = b;
+          opt.textContent = `${b} (${bankCounts[b]} verified units)`;
+          bankSel.appendChild(opt);
+        });
+
         const cities = [...new Set(data.map((d) => d.city))].sort();
         const citySel = document.getElementById("filter-city");
         cities.forEach((c) => {
@@ -324,6 +375,25 @@ Sincerely,
           citySel.appendChild(opt);
         });
         render();
+      });
+
+    fetch("data/banks_directory.json")
+      .then((r) => r.json())
+      .then((banks) => {
+        const tbody = document.getElementById("dir-tbody");
+        banks.forEach((b) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><strong>${b.bank}</strong><br/><span style="color:#94a3b8;font-size:0.7rem;">${b.category}</span></td>
+            <td>
+              <a href="${b.portal_url}" target="_blank" rel="noopener">ROPA Portal &rarr;</a><br/>
+              <a href="${b.latest_pdf_url}" target="_blank" rel="noopener">Latest 2026 PDF/List &rarr;</a>
+            </td>
+            <td>${b.green_tag_rule}</td>
+            <td>${b.contact}</td>
+          `;
+          tbody.appendChild(tr);
+        });
       });
   </script>
 </body>

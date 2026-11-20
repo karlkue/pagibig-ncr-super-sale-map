@@ -1,0 +1,130 @@
+[
+  {
+    "bank": "RCBC",
+    "category": "Universal Bank",
+    "portal_url": "https://www.rcbc.com/rcbc-properties-for-sale",
+    "latest_pdf_url": "https://www.rcbc.com/uploads/media/Properties-For-Sale-October-2026.pdf",
+    "green_tag_rule": "Property Account No. highlighted in yellow + Occupancy Status = 'With bank's possession' (vacant & secured).",
+    "contact": "Elma Silvestre (epsilvestre@rcbc.com) / Median Cadiao (mdcadiao@rcbc.com / 0918-992-9605)"
+  },
+  {
+    "bank": "BDO",
+    "category": "Universal Bank",
+    "portal_url": "https://www.bdo.com.ph/personal/assets-for-sale/real-estate",
+    "latest_pdf_url": "https://www.bdo.com.ph/content/dam/bdounibank/en-ph/mcg-digital-marketing/asset-for-sale/asset-listings/Metro_Manila_Makati_City.pdf",
+    "green_tag_rule": "Retail Condominium units without '(No Possession)', '(No Title/TD in Bank's name)', or '(Under Lease)' annotations.",
+    "contact": "BDO Property Management Unit (realestatesales@bdo.com.ph / +632 8702-7088)"
+  },
+  {
+    "bank": "China Bank Savings",
+    "category": "Thrift / Savings Bank",
+    "portal_url": "https://www.cbs.com.ph/",
+    "latest_pdf_url": "https://www.cbs.com.ph/assets/files/CBS_Real_Estate_List.pdf",
+    "green_tag_rule": "Pages 1-10 section where Remarks = 'Bank With Possession / Title in the Bank's Name' (excludes 'PROPERTIES WITH ISSUES' on Pages 11+).",
+    "contact": "CBS Acquired Assets Division (ggfrancisco.cbs@chinabank.ph / 8-988-9555 loc 72645)"
+  },
+  {
+    "bank": "Chinabank",
+    "category": "Universal Bank",
+    "portal_url": "https://www.chinabank.ph/acquired-assets-for-sale",
+    "latest_pdf_url": "https://www.chinabank.ph/library/real-estate-listing-mm",
+    "green_tag_rule": "Metro Manila listing units without '(Title with Sec. 7 R.A. 26 annotation)' or '(WITH ABANDONED PERSONAL ITEMS)'.",
+    "contact": "Chinabank Acquired Assets Division (8885-5723 / 8885-5304)"
+  },
+  {
+    "bank": "Maybank Philippines",
+    "category": "Commercial Bank",
+    "portal_url": "https://www.maybank.com.ph/",
+    "latest_pdf_url": "https://www.maybank.com.ph/iwov-resources/maybank-ph/document/ph/en/personal/loans/ROPA-REAL-ESTATE-PRICELIST-as-of-APRIL-30-2026.pdf",
+    "green_tag_rule": "Description explicitly ends with '- Vacant' + consolidated CCT No. (excludes '- with illegal occupants/not in Bank's possession').",
+    "contact": "Leslie Sevilla / Karlo Tresvalles (ph.ropa_re@maybank.com / 0998-588-3893)"
+  },
+  {
+    "bank": "Security Bank",
+    "category": "Universal Bank",
+    "portal_url": "https://www.securitybank.com/personal/loans/repossessed-assets/properties-for-sale/",
+    "latest_pdf_url": "https://www.securitybank.com/personal/loans/repossessed-assets/properties-for-sale/",
+    "green_tag_rule": "Listings with explicit '(CCT No. ... – SBC)' and without '(With documentation concerns)'.",
+    "contact": "Ranilo Nadonza / KRMalabanan@securitybank.com.ph / SBCCollections@securitybank.com.ph"
+  },
+  {
+    "bank": "Bank of Commerce",
+    "category": "Universal Bank",
+    "portal_url": "https://www.bankcom.com.ph/properties/",
+    "latest_pdf_url": "https://www.bankcom.com.ph/wp-content/uploads/2026/06/Metro-Manila-Pricelist-3rd-Qtr-2026.pdf",
+    "green_tag_rule": "Unmarked status column (excludes '*', '**', '***' footnote issues and 'For re-appraisal').",
+    "contact": "Acquired Assets Management Department (customerservice@bankcom.com.ph)"
+  },
+  {
+    "bank": "Sterling Bank of Asia",
+    "category": "Thrift / Savings Bank",
+    "portal_url": "https://sterlingbankasia.com/assets/real-estate",
+    "latest_pdf_url": "https://sterlingbankasia.com/sites/default/files/available-realestate-for-sale.pdf",
+    "green_tag_rule": "Status of Title = 'TITLE UNDER BANK'S NAME' and Address has no '(no possession)' or '(occupied)' note.",
+    "contact": "Luisa / Enjoli / Ranee (acquired.assets@sterlingbankasia.com / +632 8361-7771)"
+  },
+  {
+    "bank": "PNB",
+    "category": "Universal Bank",
+    "portal_url": "https://www.pnb.com.ph/index.php/acquired-assets",
+    "latest_pdf_url": "https://pnb-website.s3.ap-southeast-1.amazonaws.com/uploads/docs/LIST_OF_AVAILABLE_(CLEAN)_PROPERTIES_FOR_SALE_as_of_June_30_2025.pdf",
+    "green_tag_rule": "Listed in PNB's dedicated 'LIST OF AVAILABLE (CLEAN) PROPERTIES FOR SALE' PDF.",
+    "contact": "Hannah Grace T. Lucas (lucashgt@pnb.com.ph) / Angelica B. Rubio (rubioab@pnb.com.ph)"
+  },
+  {
+    "bank": "EastWest Bank",
+    "category": "Universal Bank",
+    "portal_url": "https://pre-owned-properties.eastwestbanker.com/",
+    "latest_pdf_url": "https://pre-owned-properties.eastwestbanker.com/",
+    "green_tag_rule": "Active NCR Residential Condominium listings on EastWest Pre-Owned Properties portal.",
+    "contact": "EastWest Acquired Assets (reproperties@eastwestbanker.com / 0999-8857830)"
+  },
+  {
+    "bank": "PSBank",
+    "category": "Thrift / Savings Bank",
+    "portal_url": "https://www.psbank.com.ph/properties-for-sale/",
+    "latest_pdf_url": "https://www.psbank.com.ph/properties-for-sale/",
+    "green_tag_rule": "Active NCR Condominium listings on PSBank Properties for Sale portal.",
+    "contact": "PSBank Asset Sales Account Officers ((02) 8885-8335 / 0947-994-3644)"
+  },
+  {
+    "bank": "DBP",
+    "category": "Government Development Bank",
+    "portal_url": "https://www.dbp.ph/properties-for-sale-invitation-to-bid/",
+    "latest_pdf_url": "https://www.dbp.ph/wp-content/uploads/2026/10/Invitation-to-Bid-October-29-2026.pdf",
+    "green_tag_rule": "Sealed bidding properties with consolidated TCT/CCT No. and empty/clean Remarks/Disclosure column.",
+    "contact": "DBP Acquired Assets Department (aad@dbp.ph / (02) 8818-9511 loc 2961-2969)"
+  },
+  {
+    "bank": "BPI Buena Mano",
+    "category": "Universal Bank",
+    "portal_url": "https://www.bpi.com.ph/group/buenamano",
+    "latest_pdf_url": "https://www.buenamano.ph/",
+    "green_tag_rule": "Explicitly tagged 'Green Tag' (Consolidated Title + Unoccupied).",
+    "contact": "Buena Mano Sales Team (buenamano@bpi.com.ph)"
+  },
+  {
+    "bank": "Metrobank",
+    "category": "Universal Bank",
+    "portal_url": "https://www.metrobank.com.ph/assets-for-sale/properties",
+    "latest_pdf_url": "https://www.metrobank.com.ph/assets-for-sale/properties",
+    "green_tag_rule": "Clean title, vacant possession in Metrobank Acquired Assets downloadable catalog.",
+    "contact": "Metrobank Acquired Assets (customercare@metrobank.com.ph / (02) 88-700-700)"
+  },
+  {
+    "bank": "UnionBank",
+    "category": "Universal Bank",
+    "portal_url": "https://www.unionbankph.com/foreclosed-properties",
+    "latest_pdf_url": "https://www.unionbankph.com/foreclosed-announcement-downloadable?id=7444",
+    "green_tag_rule": "Clean title, vacant NCR condos on UnionBank Foreclosed Properties portal.",
+    "contact": "UnionBank Asset Recovery Group (ARGMarketing@unionbankph.com / argsales@unionbankph.com)"
+  },
+  {
+    "bank": "Landbank",
+    "category": "Government Universal Bank",
+    "portal_url": "https://www.landbank.com/property-for-sale",
+    "latest_pdf_url": "https://www.landbank.com/properties-for-sale/ropa-bidding",
+    "green_tag_rule": "Clean title ROPA properties under Landbank SPAD / PMU.",
+    "contact": "Charlamagne O. Solano (PMU@landbank.com / SPAD2PMU@landbank.com / (02) 8405-7366)"
+  }
+]
